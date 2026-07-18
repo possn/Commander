@@ -1,22 +1,21 @@
-# Strategos v0.4.0 — Foundation
+# Strategos v0.4.0 — Living Human Graph
 
-First implementation of Milestone M1 / Sprint 4.1.
+Incremental product release based on v0.3.3.
 
-## Included
-- Mandatory four-step onboarding
-- First persistent Human Model
-- User Manifesto and commitment
-- Frozen navigation: Today, Journal, Academy, Profile
-- Settings for voice, sound, haptics and Wake Lock
-- Offline/local-first state storage
-- Consult → Commit → Practice → Reflect → Learn loop
-- Terminology changed from Mission to Practice in the interface
+## New
+- Modular Human Graph engine
+- Six frozen dimensions: Body, Mind, Relationships, Purpose, Legacy, Agency
+- Living Human Graph on Observe screen
+- Projected Human Return on mission screen
+- Momentum, confidence and volatility model
+- Existing mission, execution, reflection, journal and history flows preserved
 
-## Run
-Serve the folder over HTTP (ES modules do not run reliably from `file://`).
-
+## Test
 ```bash
-python3 -m http.server 8080
+npm test
 ```
 
-Open `http://localhost:8080`.
+## Run
+```bash
+npm run dev
+```
