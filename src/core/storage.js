@@ -1,31 +1,15 @@
-const KEY = 'onearete.strategos.v03';
-export const ONBOARDING_VERSION = 2;
-
-const createInitialState = () => ({
-  profile: null,
-  history: [],
-  current: null,
-  deltaTotal: 0,
-  onboardingVersion: 0,
-  settings: { sound: true, voice: 'minimal', haptics: true, keepAwake: true }
-});
-
-export function loadState() {
-  try {
-    const raw = localStorage.getItem(KEY);
-    const parsed = raw ? JSON.parse(raw) : {};
-    const initial = createInitialState();
-    return { ...initial, ...parsed, settings: { ...initial.settings, ...(parsed.settings || {}) } };
-  } catch (error) {
-    console.warn('Strategos state was reset because stored data was invalid.', error);
-    try { localStorage.removeItem(KEY); } catch (_) {}
-    return createInitialState();
-  }
+const KEY='onearete.strategos.v05';
+const LEGACY_KEYS=['onearete.strategos.v03'];
+export const ONBOARDING_VERSION=3;
+const initial=()=>({profile:null,history:[],judgements:[],current:null,deltaTotal:0,onboardingVersion:0,settings:{sound:true,voice:'minimal',haptics:true,keepAwake:true}});
+export function loadState(){
+  try{
+    let raw=localStorage.getItem(KEY);
+    if(!raw){for(const k of LEGACY_KEYS){raw=localStorage.getItem(k);if(raw)break}}
+    const parsed=raw?JSON.parse(raw):{};const base=initial();
+    const state={...base,...parsed,judgements:parsed.judgements||[],settings:{...base.settings,...(parsed.settings||{})}};
+    localStorage.setItem(KEY,JSON.stringify(state));return state;
+  }catch(e){console.warn('Strategos state reset.',e);return initial()}
 }
-
-export function saveState(state) {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); }
-  catch (error) { console.warn('Strategos could not persist state.', error); }
-}
-
-export function resetState() { try { localStorage.removeItem(KEY); } catch (_) {} }
+export function saveState(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){console.warn('Could not persist Strategos state.',e)}}
+export function resetState(){try{localStorage.removeItem(KEY);for(const k of LEGACY_KEYS)localStorage.removeItem(k)}catch(_){}}
