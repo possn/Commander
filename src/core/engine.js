@@ -17,13 +17,13 @@ export function decide(context, history = []) {
 
   const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
   const [winnerId, winnerScore] = ranked[0];
-  const mission = CODEX.find(m => m.id === winnerId);
-  const duration = [...mission.durationOptions].reverse().find(d => d <= time) || mission.durationOptions[0];
+  const practice = CODEX.find(m => m.id === winnerId);
+  const duration = [...practice.durationOptions].reverse().find(d => d <= time) || mission.durationOptions[0];
   const confidence = Math.round(clamp(0.58 + (winnerScore - ranked[1][1]) * 0.65, 0.56, 0.96) * 100);
   const reasons = buildReasons(winnerId, context, recentStrength);
   const alternatives = ranked.slice(1, 3).map(([id]) => CODEX.find(m => m.id === id).name);
-  const delta = scaleDelta(mission.baseDelta, duration / 15);
-  return { mission, duration, confidence, reasons, alternatives, delta, scores };
+  const delta = scaleDelta(practice.baseDelta, duration / 15);
+  return { practice, mission: practice, duration, confidence, reasons, alternatives, delta, scores, intention: buildIntention(winnerId, context) };
 }
 
 function buildReasons(id, c, recentStrength) {
@@ -31,7 +31,7 @@ function buildReasons(id, c, recentStrength) {
   if (id === 'strength') {
     reasons.push(c.energy >= 2 ? 'Your reported energy supports productive work.' : 'A short strength dose is appropriate today.');
     reasons.push(c.sleep >= 3 ? 'Sleep was adequate for adaptation.' : 'The session is constrained to protect recovery.');
-    if (!recentStrength) reasons.push('No recent strength mission creates a useful training opportunity.');
+    if (!recentStrength) reasons.push('No recent strength practice creates a useful practice opportunity.');
   }
   if (id === 'recovery') {
     reasons.push(c.sleep <= 2 ? 'Sleep was below your useful baseline.' : 'Your current energy favours restoration.');
@@ -57,4 +57,15 @@ function scaleDelta(delta, factor) {
   for (const [key, value] of Object.entries(delta)) out[key] = +(value * Math.min(1.4, Math.max(0.5, factor))).toFixed(2);
   out.overall = +Object.values(out).filter(v => v > 0).reduce((a, b) => a + b, 0).toFixed(2);
   return out;
+}
+
+function buildIntention(id, context) {
+  const intentions = {
+    strength: context.energy >= 2 ? 'Build strength deliberately.' : 'Choose precision over intensity.',
+    recovery: 'Recover without losing momentum.',
+    focus: 'Protect attention. Finish what matters.',
+    walk: 'Create energy, not fatigue.',
+    connection: 'Be fully present with someone who matters.'
+  };
+  return intentions[id] || 'Choose deliberately.';
 }
