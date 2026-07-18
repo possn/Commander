@@ -2,6 +2,7 @@ import { decide } from './core/engine.js';
 import { loadState, saveState, resetState } from './core/storage.js';
 
 const app = document.querySelector('#app');
+window.__strategosStarted = true;
 let state = loadState();
 let context = { sleep: 3, energy: 2, time: 15, challenge: 'body' };
 let decision = null;
@@ -39,7 +40,7 @@ function question(title,key,opts){return `<div class="question"><h3>${title}</h3
 function thinking() {
   shell(`${deltaMark()}<div class="thinking-copy"><p class="eyebrow">STRATEGOS</p><h2>Evaluating today’s context.</h2><p id="thinking-line" class="muted">Reading constraints…</p></div>`, 'thinking');
   const lines=['Reading constraints…','Comparing possible missions…','Estimating long-term return…','Decision prepared.']; let i=0;
-  const cycle=setInterval(()=>{ const el=document.querySelector('#thinking-line'); if(el) el.textContent=lines[++i]||lines.at(-1); },520);
+  const cycle=setInterval(()=>{ const el=document.querySelector('#thinking-line'); i += 1; if(el) el.textContent=lines[i] || lines[lines.length - 1]; },520);
   setTimeout(()=>{clearInterval(cycle); decision=decide(context,state.history); state.current={context,decision,startedAt:null};saveState(state);route('mission')},2300);
 }
 
@@ -98,9 +99,6 @@ app.addEventListener('click',e=>{
   if(a==='reset' && confirm('Reset all Strategos data?')){resetState();state=loadState();route('splash')}
 });
 
-if ('serviceWorker' in navigator) {
-  addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
-}
 
 try {
   route('splash');
