@@ -1,19 +1,13 @@
-# Strategos v0.6.0 — Understanding Engine
+# Strategos v0.6.1 — Voice Regression Fix
 
-A complete functional release built on v0.5.0.
+A complete functional release built on v0.6.0.
 
 ## What changed
 
-- Explain Engine integrated into the app
-- Natural English voice selection and preview
-- Explicit observations, inferences, uncertainty and change conditions
-- Additional contextual signals: soreness and emotional load
-- Automatic migration from v0.5 local data
+The v0.6 voice-selection system introduced a regression by forcing a locale, changing pitch and volume, and persisting weak voice choices. v0.6.1 restores the proven v0.5 vocal behaviour while retaining the Understanding Engine, Agora, Current Judgement, Explain Engine, Journey and reflection loop.
 
-## Run locally
+## Test the voice
 
-```bash
-python3 -m http.server 8080
-```
+Open **Settings → Preview restored voice**.
 
-Then open `http://localhost:8080`.
+The application automatically migrates existing local data and removes the problematic v0.6 voice preferences.

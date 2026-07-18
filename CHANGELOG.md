@@ -1,13 +1,13 @@
 # Changelog
 
-## 0.6.0 — Understanding Engine
+## 0.6.1 — Voice Regression Fix
 
-- Added a functional Explain Engine to every Current Judgement.
-- Clearly separates observations, inferences, decisive factors, unknowns and change conditions.
-- Added soreness and emotional-load signals to reduce avoidable uncertainty.
-- Rebuilt voice selection with natural English voice ranking and en-GB preference.
-- Added persistent voice choice, speaking pace and a voice preview in Settings.
-- Added dedicated spoken copy handling and corrected awkward pronunciation patterns.
-- Preserved and migrated v0.5 data automatically.
-- Fixed the legacy duration fallback bug in the decision engine.
-- Added the missing completion tone alias.
+- Restored the vocal calibration that users preferred in v0.5.
+- Restored rate `0.88` for guided speech and `0.94` for minimal cues.
+- Restored pitch `0.88` and volume `0.72`.
+- Removed rigid British-English forcing and the v0.6 voice scoring algorithm.
+- Restored simple preference for Daniel, Samantha, or the best available English system voice.
+- Automatically clears the problematic v0.6 saved voice and pace preferences during migration.
+- Removed voice and pace selectors that could lock the app to a poor system voice.
+- Added a dedicated preview of the restored Strategos voice.
+- Preserved the complete v0.6 Understanding and Explain Engine functionality.
