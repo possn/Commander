@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="OneArete Delta">
+  <rect width="128" height="128" rx="28" fill="#11100e"/>
+  <path d="M31 92L62 31c1-2 3-2 4 0l31 61" fill="none" stroke="#d2ab76" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M39 92h50" fill="none" stroke="#d2ab76" stroke-width="8" stroke-linecap="round"/>
+  <path d="M24 38A49 49 0 0 1 99 29" fill="none" stroke="#a8763e" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+  <path d="M106 86A49 49 0 0 1 31 103" fill="none" stroke="#a8763e" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+</svg>
