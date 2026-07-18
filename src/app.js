@@ -58,11 +58,12 @@ function execute() {
   const d=decision || state.current.decision; const phases=d.mission.phases; phaseIndex=0;
   state.current.startedAt = new Date().toISOString(); saveState(state);
   const total=d.duration*60; const sourceTotal=phases.reduce((a,p)=>a+p[1],0); const scale=total/sourceTotal;
-  const adjusted=phases.map(p=>[p[0],Math.max(20,Math.round(p[1]*scale)),p[2]]); state.current.adjusted=adjusted;saveState(state);
+  const adjusted=phases.map(p=>[p[0],Math.max(20,Math.round(p[1]*scale)),p[2],p[3] || []]); state.current.adjusted=adjusted;saveState(state);
   runPhase(adjusted);
 }
 function runPhase(phases){ const p=phases[phaseIndex]; if(!p){finishMission();return;} secondsLeft=p[1];
-  shell(`<header><span class="eyebrow">MISSION IN PROGRESS</span><button class="icon-btn" data-action="abandon">×</button></header><section class="execution"><p class="phase-count">${phaseIndex+1} / ${phases.length}</p><h2>${p[0]}</h2><div class="clock" id="clock">${formatTime(secondsLeft)}</div><p>${p[2]}</p><div class="progress"><span id="phase-progress"></span></div></section><div class="bottom-actions"><button class="action secondary" data-action="next-phase">Next phase</button></div>`,'execute');
+  const guidance = (p[3] || []).map(item=>`<li>${esc(item)}</li>`).join('');
+  shell(`<header><span class="eyebrow">MISSION IN PROGRESS</span><button class="icon-btn" data-action="abandon">×</button></header><section class="execution"><p class="phase-count">${phaseIndex+1} / ${phases.length}</p><h2>${p[0]}</h2><div class="clock" id="clock">${formatTime(secondsLeft)}</div><p class="phase-summary">${p[2]}</p>${guidance?`<details class="exercise-guide" open><summary>How to do it</summary><ul>${guidance}</ul></details>`:''}<div class="progress"><span id="phase-progress"></span></div></section><div class="bottom-actions"><button class="action secondary" data-action="next-phase">Next phase</button></div>`,'execute');
   timer=setInterval(()=>{secondsLeft--; const c=document.querySelector('#clock'); const bar=document.querySelector('#phase-progress'); if(c)c.textContent=formatTime(secondsLeft); if(bar)bar.style.width=`${100*(1-secondsLeft/p[1])}%`; if(secondsLeft<=0){clearInterval(timer);vibrate(35);phaseIndex++;runPhase(phases)}},1000)
 }
 function finishMission(){clearInterval(timer);route('reflect')}
