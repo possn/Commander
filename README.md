@@ -1,18 +1,22 @@
-# Strategos v0.3.3 — Modular Recovery Build
+# Strategos v0.4.0 — Foundation
 
-Modular GitHub Pages build of Strategos by OneArete.
+First implementation of Milestone M1 / Sprint 4.1.
 
-## Files
+## Included
+- Mandatory four-step onboarding
+- First persistent Human Model
+- User Manifesto and commitment
+- Frozen navigation: Today, Journal, Academy, Profile
+- Settings for voice, sound, haptics and Wake Lock
+- Offline/local-first state storage
+- Consult → Commit → Practice → Reflect → Learn loop
+- Terminology changed from Mission to Practice in the interface
 
-- `index.html`: stable bootstrap and visible startup diagnostics
-- `styles.css`: interface and design system
-- `src/app.js`: UI flow
-- `src/core/engine.js`: decision engine
-- `src/core/storage.js`: resilient local persistence
-- `src/data/codex.js`: mission knowledge
+## Run
+Serve the folder over HTTP (ES modules do not run reliably from `file://`).
 
-## Deployment
+```bash
+python3 -m http.server 8080
+```
 
-Upload every file and folder to the repository root and publish the `main` branch from `/ (root)` in GitHub Pages.
-
-This build intentionally has no service worker. Offline caching will return only after the startup path is stable.
+Open `http://localhost:8080`.
