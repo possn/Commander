@@ -1,20 +1,19 @@
-# Strategos v0.5.0 — The Agora
+# Strategos v0.6.0 — Understanding Engine
 
-A functional PWA prototype implementing the frozen OneArete principles:
+A complete functional release built on v0.5.0.
 
-- Understanding before guidance
-- Independent Advisor deliberation
-- Current Judgement instead of opaque recommendation
-- Confidence, unknowns and epistemic humility
-- Human choice before practice
-- Reflection on the judgement
-- Deliberation Archive and Understanding screen
+## What changed
 
-## Deploy
-Upload **the contents of this folder** to the root of the existing GitHub Pages repository, replacing the previous files. Keep the repository structure intact.
+- Explain Engine integrated into the app
+- Natural English voice selection and preview
+- Explicit observations, inferences, uncertainty and change conditions
+- Additional contextual signals: soreness and emotional load
+- Automatic migration from v0.5 local data
 
-## Test locally
-Run `npm test`, then `python3 -m http.server 8080` and open `http://localhost:8080`.
+## Run locally
 
-## iPhone refresh
-After GitHub Pages updates, open Safari, refresh the page, and if an older installed PWA remains cached, remove it from the Home Screen and add it again.
+```bash
+python3 -m http.server 8080
+```
+
+Then open `http://localhost:8080`.
