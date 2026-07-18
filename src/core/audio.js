@@ -49,33 +49,21 @@ function loadVoices() {
   return cachedVoices;
 }
 
-function scoreVoice(voice, preferredName = 'auto') {
-  const name = `${voice.name || ''} ${voice.voiceURI || ''}`.toLowerCase();
-  const lang = (voice.lang || '').toLowerCase();
-  let score = 0;
-  if (preferredName !== 'auto' && voice.name === preferredName) score += 1000;
-  if (lang === 'en-gb') score += 160;
-  else if (lang.startsWith('en-gb')) score += 150;
-  else if (lang === 'en-us') score += 120;
-  else if (lang.startsWith('en')) score += 80;
-  if (/premium|enhanced|natural|neural/.test(name)) score += 80;
-  if (/daniel|serena|arthur|martha|oliver|samantha|ava|allison|susan|tom/.test(name)) score += 40;
-  if (/compact|novelty|whisper|zarvox|cellos|bells/.test(name)) score -= 200;
-  if (voice.localService) score += 10;
-  if (voice.default) score += 5;
-  return score;
+function preferredVoice() {
+  const voices = loadVoices();
+  if (!voices.length) return null;
+
+  // Restores the voice-selection behaviour that sounded natural in v0.5.
+  // Prefer familiar high-quality English system voices without forcing a locale.
+  return voices.find(v => /Daniel|Samantha/i.test(v.name || ''))
+    || voices.find(v => /en-GB|en_US/i.test(`${v.lang || ''} ${v.name || ''}`))
+    || voices.find(v => /^en[-_]/i.test(v.lang || ''))
+    || voices[0]
+    || null;
 }
 
 export function getEnglishVoices() {
-  return loadVoices()
-    .filter(v => /^en[-_]/i.test(v.lang || ''))
-    .sort((a, b) => scoreVoice(b) - scoreVoice(a));
-}
-
-export function bestVoice(preferredName = 'auto') {
-  const voices = loadVoices();
-  if (!voices.length) return null;
-  return [...voices].sort((a, b) => scoreVoice(b, preferredName) - scoreVoice(a, preferredName))[0] || null;
+  return loadVoices().filter(v => /^en[-_]/i.test(v.lang || ''));
 }
 
 export function prepareSpokenText(text = '') {
@@ -93,22 +81,20 @@ export function speak(text, mode = 'minimal', enabled = true, options = {}) {
   if (!enabled || mode === 'off' || !('speechSynthesis' in window) || !text) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(prepareSpokenText(options.spokenText || text));
-  const pace = options.pace || 'calm';
-  utterance.rate = pace === 'energetic' ? .98 : pace === 'balanced' ? .92 : .86;
-  if (mode === 'minimal') utterance.rate += .03;
-  utterance.pitch = 1.0;
-  utterance.volume = .86;
-  utterance.lang = 'en-GB';
-  utterance.voice = bestVoice(options.voiceName || 'auto');
+
+  // Exact vocal calibration restored from the well-received v0.5 release.
+  utterance.rate = mode === 'guided' ? .88 : .94;
+  utterance.pitch = .88;
+  utterance.volume = .72;
+  utterance.voice = preferredVoice();
+  if (utterance.voice?.lang) utterance.lang = utterance.voice.lang;
+
   activeUtterance = utterance;
   window.speechSynthesis.speak(utterance);
 }
 
-export function previewVoice(settings = {}) {
-  speak('I will listen first, explain my judgement, and leave the choice with you.', 'guided', true, {
-    pace: settings.voicePace || 'calm',
-    voiceName: settings.voiceName || 'auto'
-  });
+export function previewVoice() {
+  speak("Good morning. I've been thinking about today. Here's what I think.", 'guided', true);
 }
 
 export function stopVoice() {
