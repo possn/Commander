@@ -1,32 +1,44 @@
-# Commander by OneArete — MVP v0.1
+# Strategos v0.3 — Birth of Strategos
 
-Primeiro protótipo funcional do Commander: uma PWA mobile-first que observa contexto, recomenda uma missão, conduz a execução, recolhe reflexão e regista Δ localmente.
+**Know yourself. Improve deliberately.**
 
-## Executar
+First functional release of the OneArete Human Decision System.
 
-A app precisa de ser servida por HTTP para o Service Worker funcionar.
+## Included
+
+- Observe → Evaluate → Explain → Commit → Execute → Reflect
+- Rule-based, auditable decision engine
+- Strength, recovery, focus, walking, and connection missions
+- Decision confidence and rejected alternatives
+- Delta vector and lifetime Delta
+- Strategic Timeline
+- Local persistence and offline PWA support
+- Mobile-first OneArete visual system
+
+## Run locally
+
+Because ES modules and the service worker require HTTP, do not open `index.html` directly.
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Depois abrir `http://localhost:8080`.
+Open `http://localhost:8080`.
 
-Também pode ser publicada diretamente no GitHub Pages.
+## GitHub Pages
 
-## Incluído
+Upload the **contents** of this directory to the repository root. In GitHub:
 
-- onboarding por identidade;
-- check-in diário de contexto;
-- motor de decisão local baseado em regras;
-- quatro missões: força, recuperação, foco e caminhada;
-- temporizador por fases;
-- reflexão final;
-- Δ acumulado e histórico;
-- persistência em `localStorage`;
-- manifesto PWA e funcionamento offline;
-- símbolo Delta OneArete em SVG.
+1. Settings → Pages
+2. Source: Deploy from a branch
+3. Branch: `main`
+4. Folder: `/ (root)`
 
-## Limites deliberados
+## Architecture
 
-Esta versão não tem autenticação, backend, IA generativa, dados clínicos nem integração com wearables. O objetivo é validar a experiência central: **Observe → Orient → Commit → Execute → Reflect**.
+- `src/core/engine.js` — Strategos Decision Engine
+- `src/data/codex.js` — structured mission knowledge
+- `src/core/storage.js` — local state and Mnemosyne seed
+- `src/app.js` — product flow and interface orchestration
+
+No external dependencies are required.
