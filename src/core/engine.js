@@ -5,7 +5,7 @@ const clamp = (n, min = 0, max = 1) => Math.min(max, Math.max(min, n));
 export function decide(context, history = []) {
   const sleep = context.sleep / 4;
   const energy = context.energy / 3;
-  const recentStrength = history.slice(0, 2).some(x => x.missionId === 'strength' && x.completed);
+  const recentStrength = history.slice(0, 2).some(x => x.decision?.mission?.id === 'strength' && x.completed);
   const time = context.time;
   const scores = {};
 
